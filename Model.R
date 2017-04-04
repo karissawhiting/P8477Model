@@ -14,4 +14,8 @@ SIRMosVec = function(time, state, parms) {
   })
 }
 
+<<<<<<< HEAD
 This is Karissa's line'
+=======
+Anmol Edit Test 
+>>>>>>> b3e21ea3cc48de2de6ba310f4d7bd0d48cdb6cb5
