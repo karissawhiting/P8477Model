@@ -1,7 +1,9 @@
 library(deSolve)
 library(dplyr)
 library(ggplot2)
+library(gridExtra)
 
+install.packages("gridExtra")
 
 # function for a simple mosquito borne disease
 SIRMosVec = function(time, state, parms) {
@@ -62,5 +64,8 @@ sim=ode(y=state,times=times,func=SIRMosVec,parms = parameters)
 simdf<- as.data.frame(sim)
 plot(sim)
 
+plot1<-ggplot(simdf, aes(x=time, y=IL)) + geom_line() + ylab("Infectious Livestock") + ggtitle("Number of Infectious Livestock over Time")
 
-ggplot(dfsim, aes(x = time, y= SL), )
+plot2<-ggplot(simdf, aes(x=time, y=IM)) + geom_line() + ylab("Infectious Mosquito") + ggtitle("Number of Infectious Mosquitoes over Time")
+
+grid.arrange(plot1,plot2)
