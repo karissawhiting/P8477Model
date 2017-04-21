@@ -3,10 +3,9 @@ library(dplyr)
 library(ggplot2)
 library(gridExtra)
 
-install.packages("gridExtra")
 
 # function for a simple mosquito borne disease
-SIRMosVec = function(time, state, parms) {
+SEIRMosVec = function(time, state, parms) {
   with(as.list(c(state, parms)), {
     # infection in livestocks
     dSL = vL - SL* r*(TLM * IM)/NM - muL * SL
@@ -36,7 +35,7 @@ Q = 1;
 NM=1; IM=0; SM=1;
 EM= 0;
 
-b1 = 1/3;
+b1 = 1/3; #number of eggs laid per day
 q1 = .02;
 theta = (1/10);
 alpha=.6667; 
@@ -44,7 +43,7 @@ alpha2 = 1/8;
 muL=.00277; # livestock life span: 10 yr
 TML = 0.81; # prob infection from livestock to mosquito;
 TLM = 0.51; # prob infection from mosquito to livestock;
-gamma=.166666666; # infectious period: 7 days
+gamma= 0.1428571; # infectious period: 7 days
 muM = 1/60; # 1 week life span for mosquito
 b=(256/365); # number of bite per mosquito per day;
 r = b / NL; # bite rate per livestock per mosquito
@@ -60,7 +59,7 @@ state = c(SL = SL, IL = IL, SM = SM,IM = IM, EL = EL, EM = EM, P = P, Q = Q)
 
 times=1:(365*.5);
 ## solve the odes using R ode sovler:
-sim=ode(y=state,times=times,func=SIRMosVec,parms = parameters)
+sim=ode(y=state,times=times,func=SEIRMosVec,parms = parameters)
 simdf<- as.data.frame(sim)
 plot(sim)
 
@@ -69,3 +68,5 @@ plot1<-ggplot(simdf, aes(x=time, y=IL)) + geom_line() + ylab("Infectious Livesto
 plot2<-ggplot(simdf, aes(x=time, y=IM)) + geom_line() + ylab("Infectious Mosquito") + ggtitle("Number of Infectious Mosquitoes over Time")
 
 grid.arrange(plot1,plot2)
+
+

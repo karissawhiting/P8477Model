@@ -1,0 +1,48 @@
+---
+title: "reporting"
+author: "Karissa Whiting"
+date: "4/20/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+
+```
+### Aedes Mosquitos
+
+$\cfrac{dP}{dt} = {b_{1}}(N_{M}-q_{1}I_{M})- \theta{P}$
+
+$\cfrac{dQ}{dt} = {b_{1}}q_{1}I_{M}- \theta{Q}$
+
+$\cfrac{dS_{M}}{dt} = \theta{P} - \frac{\beta_{ML}S_{M}I_{L}}{N_{L}} - \mu_{M}S_{M}$
+
+$\cfrac{dE_{M}}{dt} = \frac{\beta_{ML}S_{M}I_{L}}{N_{L}} - \alpha_{M}E_{M} -\mu_{M}E_{M}$
+
+$\cfrac{dI_{M}}{dt} = \theta{Q} + \alpha_{M}E_{M} -\mu_{M}I_{M}$
+
+
+###Livestock
+
+
+$\cfrac{dS_{L}}{dt} = N_{L}\mu_{L} - \frac{\beta_{LM}S_{L}I_{M}}{N_{M}}- \mu_{L}S_{L}$
+
+$\cfrac{dE_{L}}{dt} =  \frac{\beta_{LM}S_{L}I_{M}}{N_{M}}- \alpha_{L}E_{L} - \mu_{L}E_{L}$
+
+$\cfrac{dI_{L}}{dt} = \alpha_{L}E_{L} - \gamma{I_{L}} -  \mu_{L}I_{L} - d_{L}I_{L}$
+
+$\cfrac{dInci_{L}}{dt} = \alpha_{L}E_{L}$
+
+
+
+
+
+
+
+
+
+
+
+
+
+kfldkf
+
