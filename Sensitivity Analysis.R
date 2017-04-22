@@ -20,6 +20,8 @@ for (i in 1:length(gammamat)){
     sim2[seq(1,nrow(sim2)-7,by=7),'dInci'] 
 }
   
+
+
 ######################
 # Plots              #
 ######################
