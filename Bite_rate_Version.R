@@ -3,21 +3,21 @@ library(ggplot2)
 library(reshape2)
 
 # function for a simple mosquito borne disease
-SEIRMosVec = function(time, state, parms) {
+SEIRMosVecbit = function(time, state, parms) {
   with(as.list(c(state, parms)), {
     # infection in mosquitoes
     dP = b1*(NM-q1*IM)- theta*P #susceptible
     dQ = b1*q1*IM-theta*Q         #Infected Egg
-    dSM = theta*P - (BML*SM*IL)/NL - muM * SM
-    dEM = (BML*SM*IL)/NL - alphaM*EM-muM*EM
+    dSM = theta*P - r*(BML*SM*IL) - muM * SM
+    dEM = r*(BML*SM*IL) - alphaM*EM-muM*EM
     dIM = theta*Q + alphaM*EM - muM * IM
     
     # infection in livestocks
-    dSL = NL*muL - (BLM*SL*IM)/NM - muL * SL
-    dEL=(BLM*SL*IM)/NM-alphaL*EL-muL*EL
+    dSL = NL*muL - r*(BLM*SL*IM) - muL * SL
+    dEL= r*(BLM*SL*IM)-alphaL*EL-muL*EL
     dIL = alphaL*EL - gamma*IL - muL*IL - dL*IL
     dInci = alphaL*EL
-
+    
     list(c(dSL,dIL, dSM, dIM, dEL, dEM, dP, dQ, dInci))
   })
 }
@@ -40,6 +40,12 @@ SL=NL-IL-EL;
 ######################
 # Parameters         #
 ######################
+
+
+bit = 256/356 ## bites per mosquit
+r = bit/NL
+
+
 #Mosquito
 b1 = 1/30;       #number of eggs laid per day
 q1 = .05;        #transovarial transmission rate
@@ -57,7 +63,8 @@ BLM= .1           #transmission rate to livestock from mosquito
 dL = .07          #death rate in livestock due to RVF
 
 parameters = c(muL = muL, muM = muM, 
-               gamma = gamma, alphaL = alphaL, alphaM = alphaM, theta = theta, b1 = b1, q1 = q1, dL = dL)
+               gamma = gamma, alphaL = alphaL, 
+               alphaM = alphaM, theta = theta, b1 = b1, q1 = q1, dL = dL, r = r, bit = bit)
 
 state = c(SL = SL, IL = IL, SM = SM,IM = IM, EL = EL, EM = EM, P = P, Q = Q, dInci = 0)
 
@@ -66,7 +73,7 @@ times=1:(365*1); # months
 ######################
 # Simulation         #
 ######################
-sim=ode(y=state,times=times,func=SEIRMosVec,parms = parameters)
+sim=ode(y=state,times=times,func=SEIRMosVecbit,parms = parameters)
 
 
 
