@@ -1,6 +1,7 @@
 library(deSolve)
 library(ggplot2)
 library(reshape2)
+library(gridExtra)
 
 # function for a simple mosquito borne disease
 SEIRMosVec = function(time, state, parms) {
@@ -57,7 +58,8 @@ BLM= .1           #transmission rate to livestock from mosquito
 dL = .07          #death rate in livestock due to RVF
 
 parameters = c(muL = muL, muM = muM, 
-               gamma = gamma, alphaL = alphaL, alphaM = alphaM, theta = theta, b1 = b1, q1 = q1, dL = dL)
+               gamma = gamma, alphaL = alphaL, alphaM = alphaM, 
+               theta = theta, b1 = b1, q1 = q1, dL = dL, BML = BML, BLM = BLM)
 
 state = c(SL = SL, IL = IL, SM = SM,IM = IM, EL = EL, EM = EM, P = P, Q = Q, dInci = 0)
 
