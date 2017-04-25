@@ -82,4 +82,9 @@ sim=ode(y=state,times=times,func=SEIRMosVec,parms = parameters)
 plot(sim)
 
 
+######################
+# R0             #
+######################
+
+((BLM*BML)/ (muM*(gamma + muL))*(NM/NL))
 
