@@ -3,6 +3,8 @@ library(dplyr)
 library(ggplot2)
 library(gridExtra)
 
+install.packages("sensitivity")
+install.packages("dplyr")
 
 # function for a simple mosquito borne disease
 SEIRMosVec = function(time, state, parms) {
@@ -63,10 +65,77 @@ sim=ode(y=state,times=times,func=SEIRMosVec,parms = parameters)
 simdf<- as.data.frame(sim)
 plot(sim)
 
-plot1<-ggplot(simdf, aes(x=time, y=IL)) + geom_line() + ylab("Infectious Livestock") + ggtitle("Number of Infectious Livestock over Time")
+#plots
+plot1<-ggplot(simdf, aes(x=time, y=IL)) + geom_line() 
+plot1
+
+#code for combining graphs(?)
+plot2<-ggplot(simdf, aes(x=time, y=IM)) + geom_line()
+visuals=rbind(plot1,plot2)
+ggplot(visuals)
+#nope didn't work
+
+#trying again
+arrange(plot1,plot2)
+#nope
+
+#trying again
+grid.newpage()
+grid.draw(rbind(ggplotGrob(plot1), ggplotGrob(plot2), size = "last"))
+
+g1<-ggplotGrob(plot1)
+g2<-ggplotGrob(plot2)
+g<-rbind(g1,g2)
+grid.newpage()
+grid.draw(g)
+
+#try try again
+g<-ggplot(simdf,aes(x=time))+geom_line(aes(y=P),color="red")+geom_line(aes(y=Q),color="green")+ylab("Number of Mosquito Eggs") + xlab("Time")
+g
+#yay it worked!!
+
+#now adding legend
+g<-ggplot(simdf,aes(x=time))+geom_line(aes(y=P,color="Uninfected"))+geom_line(aes(y=Q,color="Infected"))+ylab("Number of Mosquito Eggs") + xlab("Time")+scale_color_manual(name="Egg Type",values=c(Uninfected="red",Infected="green"),labels=c("Uninfected","Infected"))
+g
+#success!
+
+#removing background grid
+g+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+#removing everything
+g+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+      panel.background = element_blank(), axis.line = element_line(colour = "black"))
+#hmm don't know why gray background on legend
+#just grid
+g+theme_bw()
+
+#extra plots
+
+plot1 + ggplot(simdf, aes(y=IM)) + geom_line()
+
+plot1 + ggplot(simdf, aes(x=time, y=IM)) + geom_line() + ylab("Infectious Mosquito") + ggtitle("Number of Infectious Mosquitoes over Time")
 
 plot2<-ggplot(simdf, aes(x=time, y=IM)) + geom_line() + ylab("Infectious Mosquito") + ggtitle("Number of Infectious Mosquitoes over Time")
 
-grid.arrange(plot1,plot2)
+plot3<-ggplot(simdf, aes(x=time, y=EM)) + geom_line() + ylab("Exposed Mosquito") 
++ ggtitle("Number of Exposed Mosquitoes over Time")
+
+plot4<-ggplot(simdf, aes(x=time, y=EL)) + geom_line() + ylab("Exposed Livestock") 
++ ggtitle("Number of Exposed Livestock over Time")
+
+plot5<-ggplot(simdf, aes(x=time, y=SM)) + geom_line() + ylab("Susceptible Mosquito") 
++ ggtitle("Number of Susceptible Mosquitoes over Time")
+
+plot6<-ggplot(simdf, aes(x=time, y=SL)) + geom_line() + ylab("Susceptible Livestock") 
++ ggtitle("Number of Susceptible Livestock over Time")
+
+plot7<-ggplot(simdf, aes(x=time, y=P)) + geom_line() + ylab("Uninfected Mosquito Eggs") 
++ ggtitle("Number of Uninfected Mosquito Eggs over Time")
+
+plot8<-ggplot(simdf, aes(x=time, y=Q)) + geom_line() + ylab("Infected Mosquito Eggs") 
++ ggtitle("Number of Infected Mosquito Eggs over Time")
+
+#taking random sample (Beta12)
+sample(0:0.32, 2, replace=TRUE)
+plotprcc
 
 
