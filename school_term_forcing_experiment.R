@@ -6,21 +6,22 @@ library(gridExtra)
 # function for a simple mosquito borne disease
 SEIRMosVec = function(time, state, parms) {
   with(as.list(c(state, parms)), {
+    
+    cul = cul*Term[time]
     # infection in mosquitoes
     dP = b1*(NM-q1*IM)- theta*P #susceptible
     dQ = b1*q1*IM-theta*Q         #Infected Egg
     dSM = theta*P - (BML*SM*IL)/NL - muM * SM
     dEM = (BML*SM*IL)/NL - alphaM*EM-muM*EM
     dIM = theta*Q + alphaM*EM - muM * IM
-    
     # infection in livestocks
     dSL = NL*muL - (BLM*SL*IM)/NM - muL * SL
-    dEL=(BLM*SL*IM)/NM-alphaL*EL-muL*EL
-    dIL = alphaL*EL - gamma*IL - muL*IL - dL*IL
+    dEL=(BLM*SL*IM)/NM-alphaL*EL-muL*EL - cul*EL
+    dIL = alphaL*EL - gamma*IL - muL*IL - dL*IL -cul*IL
     dInci = alphaL*EL
-
+    
     list(c(dP, dQ, dSM, dEM, dIM, dSL,dEL, dIL, dInci))
-           #dIL, dSM, dIM, dEL, dEM, dP, dQ, dInci))
+    #dIL, dSM, dIM, dEL, dEM, dP, dQ, dInci))
   })
 }
 
@@ -59,12 +60,12 @@ gamma= (1/5);     # recovery rate livestock, infectious period: 7 days
 #vL=NL*muL;       #birth rate livestock
 BLM= BML           #transmission rate to livestock from mosquito
 dL = .07          #death rate in livestock due to RVF
-
-parameters = c(muL = muL, muM = muM, 
+cul = .5
+parameters = c(cul = cul, muL = muL, muM = muM, 
                gamma = gamma, alphaL = alphaL, alphaM = alphaM, 
                theta = theta, b1 = b1, q1 = q1, dL = dL, BML = BML, BLM = BLM)
 
-state = c(SL = SL, IL = IL, SM = SM,IM = IM, EL = EL, EM = EM, P = P, Q = Q, Inci = 0)
+#state = c(SL = SL, IL = IL, SM = SM,IM = IM, EL = EL, EM = EM, P = P, Q = Q, Inci = 0)
 state = c(P=P, Q=Q, SM=SM, EM=EM, IM=IM, SL=SL, EL=EL, IL=IL, Inci=0)
 
 times=1:(365); # months
@@ -88,3 +89,14 @@ plot(sim)
 
 ((BLM*BML)/ (muM*(gamma + muL))*(NM/NL))
 
+
+######################
+# Term-time forcing  #
+######################
+# term-time forcing
+holidays=c(100:128);
+times=seq(1,365); # in day, starts from 1
+Term=rep(0,length(times)); # intial a vector to store the Term
+# find those days that are school holidays
+ind=(1:length(Term) %% 365) %in% holidays  
+Term[ind]=1; # set them to -1
