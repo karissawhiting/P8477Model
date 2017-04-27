@@ -67,7 +67,7 @@ parameters = c(muL = muL, muM = muM,
 state = c(SL = SL, IL = IL, SM = SM,IM = IM, EL = EL, EM = EM, P = P, Q = Q, Inci = 0)
 state = c(P=P, Q=Q, SM=SM, EM=EM, IM=IM, SL=SL, EL=EL, IL=IL, Inci=0)
 
-times=1:(365); # months
+times=1:(365*10); # months
 
 ######################
 # Simulation         #

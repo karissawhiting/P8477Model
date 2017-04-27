@@ -94,7 +94,7 @@ plot(sim)
 # Term-time forcing  #
 ######################
 # term-time forcing
-holidays=c(100:128);
+holidays=c(90:118);
 times=seq(1,365); # in day, starts from 1
 Term=rep(0,length(times)); # intial a vector to store the Term
 # find those days that are school holidays

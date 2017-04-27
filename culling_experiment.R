@@ -60,7 +60,7 @@ gamma= (1/5);     # recovery rate livestock, infectious period: 7 days
 #vL=NL*muL;       #birth rate livestock
 BLM= BML           #transmission rate to livestock from mosquito
 dL = .07          #death rate in livestock due to RVF
-cul = 0
+cul = .5
 parameters = c(cul = cul, muL = muL, muM = muM, 
                gamma = gamma, alphaL = alphaL, alphaM = alphaM, 
                theta = theta, b1 = b1, q1 = q1, dL = dL, BML = BML, BLM = BLM)

@@ -36,7 +36,7 @@ ggplot(df, aes(index,value)) + geom_line(aes(colour = variable))
 ############################
 #BETAS- KARISSA
 #BLM
-betaLMmat=seq(.0021, .2762, by=.03); # 
+betaLMmat=seq(.2, .5, by=.03); # 
 resInc=matrix(0,106,length(betaLMmat)); # to save model outputs
 resEx=matrix(0,106,length(betaLMmat)); # to save model outputs
 resIn=matrix(0,106,length(betaLMmat)); # to save model outputs
@@ -195,7 +195,9 @@ for (i in 1:length(betaMLmat)){
   parameters = c(muL = muL, muM = muM, 
                  gamma = gamma, alphaL = alphaL, alphaM = alphaM, 
                  theta = theta, b1 = b1, q1 = q1, dL = dL, BML = BML, BLM = BLM)
-  state = c(SL = SL, IL = IL, SM = SM,IM = IM, EL = EL, EM = EM, P = P, Q = Q, dInci = 0)
+  
+  #state = c(SL = SL, IL = IL, SM = SM,IM = IM, EL = EL, EM = EM, P = P, Q = Q, Inci = 0)
+  state = c(P=P, Q=Q, SM=SM, EM=EM, IM=IM, SL=SL, EL=EL, IL=IL, Inci=0)
   sim2=ode(y=state,times=times,func=SEIRMosVec,parms = parameters)
   resInc[,i] = sim2[, 'dInci']
   resEx[,i] = sim2[, 'EL']
